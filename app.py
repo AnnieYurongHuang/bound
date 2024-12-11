@@ -3,11 +3,12 @@ import os
 import joblib
 import streamlit as st
 import google.generativeai as genai
+import csv
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 new_chat_id = f'{time.time()}'
 MODEL_ROLE = 'ai'
-AI_AVATAR_ICON = '✨'
+AI_AVATAR_ICON = '🧞‍♀️'
 
 # Create a data/ folder if it doesn't already exist
 try:
@@ -45,7 +46,7 @@ with st.sidebar:
     # TODO: Give user a chance to name chat
     st.session_state.chat_title = f'ChatSession-{st.session_state.chat_id}'
 
-st.write('# Chat with Gemini')
+st.write('# Bound Movie Chatbot 🤖')
 
 # Chat history (allows to ask multiple questions)
 try:
@@ -64,6 +65,16 @@ st.session_state.model = genai.GenerativeModel('gemini-pro')
 st.session_state.chat = st.session_state.model.start_chat(
     history=st.session_state.gemini_history,
 )
+with st.chat_message(MODEL_ROLE, avatar=AI_AVATAR_ICON):
+    message_placeholder = st.empty()
+    message = [
+        'Welcome to the Bound Movie Chatbot!! 🎥🎬🍿',
+        ' \nPlease list some of your favorite movies, and I will predict other movies you might like.',
+        ' \nThe more movies you list, the better the predictions will be! 🧞‍♀️😎'
+    ]
+
+    message_placeholder.markdown(" ".join(message))
+
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -89,6 +100,11 @@ if prompt := st.chat_input('Your message here...'):
             content=prompt,
         )
     )
+
+    # Augment the prompt
+    augmented_prompt = augment_prompt(prompt)
+
+
     ## Send message to AI
     response = st.session_state.chat.send_message(
         prompt,
@@ -132,3 +148,23 @@ if prompt := st.chat_input('Your message here...'):
         st.session_state.gemini_history,
         f'data/{st.session_state.chat_id}-gemini_messages',
     )
+
+def augment_prompt(prompt):
+    # Read csv to obtain a list of movie names
+    file_path = "movies_metadata.csv"
+    movie_names = []
+
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            movie_names.append(row["title"])
+
+    # Construct new prompt
+    result = f'''Consider the following list of movies which may be spelled incorrectly:
+
+    {prompt}
+
+    Respond with a message of the form:
+
+    "Are these the movies you are thinking of? <corrected list>"
+    '''
