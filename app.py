@@ -5,6 +5,35 @@ import streamlit as st
 import google.generativeai as genai
 import csv
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+model = genai.GenerativeModel('gemini-pro')
+
+def find_movies(prompt):
+    # Read csv to obtain a list of movie names
+    file_path = "movies_metadata.csv"
+    movie_names = []
+
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            movie_names.append(row["title"])
+
+    # Construct new prompt
+    augmented_prompt = f'''The follow text should be a list of movies, which may be spelled incorrectly:
+
+    <MOVIE_LIST>
+    {prompt}
+    </MOVIE_LIST>
+
+    If it does not seem like a list of movies, respond with the message: "FAILURE"
+    
+    If it does seem like a list of movies, respond with a correctly spelled, comma separated list of the movies.
+    '''
+
+    ## Send message to AI
+    response = model.generate_content(augmented_prompt)
+
+    return response.text
+
 
 new_chat_id = f'{time.time()}'
 MODEL_ROLE = 'ai'
@@ -61,10 +90,14 @@ except:
     st.session_state.messages = []
     st.session_state.gemini_history = []
     print('new_cache made')
-st.session_state.model = genai.GenerativeModel('gemini-pro')
+st.session_state.model = model
 st.session_state.chat = st.session_state.model.start_chat(
     history=st.session_state.gemini_history,
 )
+
+
+
+
 with st.chat_message(MODEL_ROLE, avatar=AI_AVATAR_ICON):
     message_placeholder = st.empty()
     message = [
@@ -102,8 +135,8 @@ if prompt := st.chat_input('Your message here...'):
     )
 
     # Augment the prompt
-    augmented_prompt = augment_prompt(prompt)
-
+    movies_list = find_movies(prompt)
+    print(movies_list)
 
     ## Send message to AI
     response = st.session_state.chat.send_message(
@@ -148,23 +181,3 @@ if prompt := st.chat_input('Your message here...'):
         st.session_state.gemini_history,
         f'data/{st.session_state.chat_id}-gemini_messages',
     )
-
-def augment_prompt(prompt):
-    # Read csv to obtain a list of movie names
-    file_path = "movies_metadata.csv"
-    movie_names = []
-
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            movie_names.append(row["title"])
-
-    # Construct new prompt
-    result = f'''Consider the following list of movies which may be spelled incorrectly:
-
-    {prompt}
-
-    Respond with a message of the form:
-
-    "Are these the movies you are thinking of? <corrected list>"
-    '''
