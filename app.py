@@ -86,12 +86,12 @@ if prompt := st.chat_input("What is up?"):
     movie_list = find_movies(prompt)
     print(movie_list)
     message = ""
-    if len(movie_list) == 0:
-        print('No movies')
-        message = "Sorry, I don't know any of those movies! Please try some others."
-    elif not movie_list:
+    if movie_list == None:
         print('No list')
         message = "Sorry, I can't help with that! Please provide a list of movies and I will give you some recommendations."
+    elif len(movie_list) == 0:
+        print('No movies')
+        message = "Sorry, I don't know any of those movies! Please try some others."
     else:
         print('Found some movies')
         recommendation_list = ["Ass queen", "Happy Gilmore"]
