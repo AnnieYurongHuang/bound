@@ -10,7 +10,7 @@ class userRequestedFor:
         self.users_data = users_data.copy()
         self.user_id = user_id
         # Find User Cluster
-        self.cluster_id = int(clusters_fixed[clusters_fixed['userId'] == self.user_id]['Cluster'])
+        self.cluster_id = int(clusters_fixed[clusters_fixed['userId'] == self.user_id]['Cluster'].iloc[0])
         # Load User Cluster Movies Dataframe
         self.movies_list = movies_df_fixed
         self.cluster_movies = self.movies_list[self.cluster_id] # dataframe
