@@ -104,6 +104,7 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message(MODEL_ROLE, avatar=ICON_DICT[MODEL_ROLE]):
         st.markdown(message)
 
+# Some movie lists to try!
 '''
 The Dark,
 Trois couleurs : Rouge,
@@ -132,4 +133,17 @@ Monsters, Inc.,
 The Hours,
 The Conversation,
 Die Ehe der Maria Brau
+'''
+
+'''
+Dancer in the Dark,
+The Dark,
+Miami Vice,
+Tron,
+The Lord of the Rings,
+48 Hrs.,
+Edward Scissorhands,
+Le Grand Bleu,
+Saw,
+Le fabuleux destin d'AmÃ©lie Poulain
 '''
