@@ -1,6 +1,7 @@
 from openai import OpenAI
 import streamlit as st
 import csv
+import recommend
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 MODEL_ROLE = 'assistant'
@@ -87,17 +88,14 @@ if prompt := st.chat_input("What is up?"):
     print(movie_list)
     message = ""
     if movie_list == None:
-        print('No list')
         message = "Sorry, I can't help with that! Please provide a list of movies and I will give you some recommendations."
     elif len(movie_list) == 0:
-        print('No movies')
         message = "Sorry, I don't know any of those movies! Please try some others."
     else:
-        print('Found some movies')
-        recommendation_list = ["Ass queen", "Happy Gilmore"]
+        recommendations = recommend.run_all(movie_list)
         content = [
-            f"Of the movies you listed, I was able to find these in my dataset: {', '.join(movie_list)}",
-            f" \nHere are some other movies you might like: {recommendation_list}"
+            f"I was able to find these movies in my dataset: {', '.join(movie_list)}",
+            f" \nHere are some other movies you might like: {recommendations}"
         ]
         message = " ".join(content)
         # Model will reply with recommendations based on your preferences (according to K-means model)
@@ -106,15 +104,32 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message(MODEL_ROLE, avatar=ICON_DICT[MODEL_ROLE]):
         st.markdown(message)
 
-
-    # with st.chat_message(MODEL_ROLE, avatar=ICON_DICT[MODEL_ROLE]):
-    #     stream = client.chat.completions.create(
-    #         model=st.session_state["openai_model"],
-    #         messages=[
-    #             {"role": m["role"], "content": m["content"]}
-    #             for m in st.session_state.messages
-    #         ],
-    #         stream=True,
-    #     )
-    #     response = st.write_stream(stream)
-    # st.session_state.messages.append({"role": MODEL_ROLE, "content": response})
+'''
+The Dark,
+Trois couleurs : Rouge,
+48 Hrs.,
+Lost in Translation,
+Berlin: Die Sinfonie der Grosstadt,
+Live and Let Die,
+Cat on a Hot Tin Roof,
+Lili Marleen,
+Le Mépris,
+Das weisse Rauschen,
+Terminator 3: Rise of the Machines,
+Catwoman,
+Crustacés et coquillages,
+The Devil Wears Prada,
+Romeo + Juliet,
+My Own Private Idaho,
+Monsoon Wedding,
+Reservoir Dogs,
+Love Actually,
+Notting Hill,
+Once Were Warriors,
+Je ne suis pas là pour être aimé,
+The Poseidon Adventure,
+Monsters, Inc.,
+The Hours,
+The Conversation,
+Die Ehe der Maria Brau
+'''
