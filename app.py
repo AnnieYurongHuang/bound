@@ -105,45 +105,45 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(message)
 
 # Some movie lists to try!
-'''
-The Dark,
-Trois couleurs : Rouge,
-48 Hrs.,
-Lost in Translation,
-Berlin: Die Sinfonie der Grosstadt,
-Live and Let Die,
-Cat on a Hot Tin Roof,
-Lili Marleen,
-Le Mépris,
-Das weisse Rauschen,
-Terminator 3: Rise of the Machines,
-Catwoman,
-Crustacés et coquillages,
-The Devil Wears Prada,
-Romeo + Juliet,
-My Own Private Idaho,
-Monsoon Wedding,
-Reservoir Dogs,
-Love Actually,
-Notting Hill,
-Once Were Warriors,
-Je ne suis pas là pour être aimé,
-The Poseidon Adventure,
-Monsters, Inc.,
-The Hours,
-The Conversation,
-Die Ehe der Maria Brau
-'''
+# '''
+# The Dark,
+# Trois couleurs : Rouge,
+# 48 Hrs.,
+# Lost in Translation,
+# Berlin: Die Sinfonie der Grosstadt,
+# Live and Let Die,
+# Cat on a Hot Tin Roof,
+# Lili Marleen,
+# Le Mépris,
+# Das weisse Rauschen,
+# Terminator 3: Rise of the Machines,
+# Catwoman,
+# Crustacés et coquillages,
+# The Devil Wears Prada,
+# Romeo + Juliet,
+# My Own Private Idaho,
+# Monsoon Wedding,
+# Reservoir Dogs,
+# Love Actually,
+# Notting Hill,
+# Once Were Warriors,
+# Je ne suis pas là pour être aimé,
+# The Poseidon Adventure,
+# Monsters, Inc.,
+# The Hours,
+# The Conversation,
+# Die Ehe der Maria Brau
+# '''
 
-'''
-Dancer in the Dark,
-The Dark,
-Miami Vice,
-Tron,
-The Lord of the Rings,
-48 Hrs.,
-Edward Scissorhands,
-Le Grand Bleu,
-Saw,
-Le fabuleux destin d'AmÃ©lie Poulain
-'''
+# '''
+# Dancer in the Dark,
+# The Dark,
+# Miami Vice,
+# Tron,
+# The Lord of the Rings,
+# 48 Hrs.,
+# Edward Scissorhands,
+# Le Grand Bleu,
+# Saw,
+# Le fabuleux destin d'AmÃ©lie Poulain
+# '''
